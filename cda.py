@@ -47,8 +47,10 @@ def extract_video(id: str):
     quality = [
         tag.string for tag in bs4.find_all("a", {"class": "quality-btn"})
     ][-1]
+    
+    if len(quality) != 0:
+        url = f"https://www.cda.pl/video/{id}?wersja={quality}"
 
-    url = f"https://www.cda.pl/video/{id}?wersja={quality}"
     res = requests.get(url, headers=headers)
     bs4 = BeautifulSoup(res.content, "lxml")
     data = bs4.find("div", {"player_data": True})["player_data"]
