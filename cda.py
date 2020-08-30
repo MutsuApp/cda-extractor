@@ -44,13 +44,13 @@ def extract_video(id: str):
     url = f"https://www.cda.pl/video/{id}"
     res = requests.get(url, headers=headers)
     bs4 = BeautifulSoup(res.content, "lxml")
-    try:
-        quality = [
-            tag.string for tag in bs4.find_all("a", {"class": "quality-btn"})
-        ][-1]
-        url = f"https://www.cda.pl/video/{id}?wersja={quality}"
-    except IndexError:
-        pass
+
+    quality = [
+        tag.string for tag in bs4.find_all("a", {"class": "quality-btn"})
+    ]
+    if (len(quality) != 0):
+        url = f"https://www.cda.pl/video/{id}?wersja={quality[-1]}"
+
     
     res = requests.get(url, headers=headers)
     bs4 = BeautifulSoup(res.content, "lxml")
